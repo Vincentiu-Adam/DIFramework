@@ -25,6 +25,12 @@ public class SceneLoadSystem
         yield return null;
     }
 
+    public static void UnloadSceneAsync(SceneInstance sceneInstance)
+    {
+        Addressables.UnloadSceneAsync(sceneInstance);
+    }
+
+#if UNITY_EDITOR
     public static IEnumerator LoadMainContextSceneWithStateAsyncAdditive(MainContextState state)
     {
         var loadOperation = Addressables.LoadSceneAsync("Assets/Scenes/Main", LoadSceneMode.Additive);
@@ -38,11 +44,6 @@ public class SceneLoadSystem
         mainContext.StartCoroutine(UnloadActiveSceneAndEnableMainSceneContext(mainContext));
     }
 
-    public static void UnloadSceneAsync(SceneInstance sceneInstance)
-    {
-        Addressables.UnloadSceneAsync(sceneInstance);
-    }
-
     private static IEnumerator UnloadActiveSceneAndEnableMainSceneContext(MainContext mainContext)
     {
         mainContext.enabled = false; //we don't want main scene to start yet until we give it the go
@@ -52,4 +53,5 @@ public class SceneLoadSystem
         //now we can start in the correct state
         mainContext.enabled = true;
     }
+#endif
 }

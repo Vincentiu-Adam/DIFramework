@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+#define RELOAD //for conditional method
+#endif
+
+using System.Collections;
 using UnityEngine;
 
 public enum MainContextState : uint
@@ -70,21 +74,14 @@ public class MainContext : MonoBehaviour
 
     private IEnumerator ConstructUI()
     {
-        yield return new WaitForSeconds(2f);
-
         m_UISceneData = new SceneData<UIContext>();
-        yield return SceneLoadSystem.LoadSceneAsyncAdditive(UISceneName, m_UISceneData);
+        yield return ConstructScene(UISceneName, m_UISceneData);
     }
 
     private IEnumerator ConstructCombat()
     {
-        yield return new WaitForSeconds(2f);
-
         m_CombatSceneData = new SceneData<CombatContext>();
-        yield return SceneLoadSystem.LoadSceneAsyncAdditive(CombatSceneName, m_CombatSceneData);
-
-        //reset load context if we wanted to load main scene from the combat before
-        m_CombatSceneData.SceneContext.ResetLoadContext();
+        yield return ConstructScene(CombatSceneName, m_CombatSceneData);
     }
 
     private void InitUI()
@@ -120,5 +117,31 @@ public class MainContext : MonoBehaviour
     {
         SceneLoadSystem.UnloadSceneAsync(m_CombatSceneData.LoadedScene);
         m_CombatSceneData = null;
+    }
+
+    private IEnumerator ConstructScene<T>(string sceneName, SceneData<T> sceneData) where T : Object
+    {
+        yield return new WaitForSeconds(2f);
+        yield return SceneLoadSystem.LoadSceneAsyncAdditive(sceneName, sceneData);
+
+        ResetLoadMainSceneContext();
+    }
+
+    [System.Diagnostics.Conditional("RELOAD")]
+    private void ResetLoadMainSceneContext()
+    {
+        Debug.Log("Reset called");
+#if UNITY_EDITOR
+        if (m_CombatSceneData?.SceneContext != null)
+        {
+            m_CombatSceneData.SceneContext.ResetLoadContext();
+        }
+
+        LoadMainContext loadMainContext = FindAnyObjectByType<LoadMainContext>();
+        if (loadMainContext != null)
+        {
+            loadMainContext.StopLoad();
+        }
+#endif
     }
 }
