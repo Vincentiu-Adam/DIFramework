@@ -34,6 +34,7 @@ public class CombatSystem
 
             float health = m_AttackSystem.GetHealthAfterAttack(firstUnit.UnitStat, m_SecondUnitAttack);
             Debug.LogFormat("First unit {0} attacked for {1}", firstUnit.ID, m_SecondUnitAttack.Damage);
+            Debug.LogFormat("Unit has visual {0}", firstUnit.VisualData.UnitObject.name);
 
             firstUnit.UnitStat.Health = health;
             yield return new WaitForSeconds(1f);
@@ -42,6 +43,7 @@ public class CombatSystem
             secondUnit.UnitStat.Health = health;
 
             Debug.LogFormat("Second unit {0} attacked for {1}", secondUnit.ID, m_FirstUnitAttack.Damage);
+            Debug.LogFormat("Unit has visual {0}", secondUnit.VisualData.UnitObject.name);
 
             yield return new WaitForEndOfFrame();
         }

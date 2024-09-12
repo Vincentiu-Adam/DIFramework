@@ -5,6 +5,8 @@ public class UnitRepository
 
     public Unit this[uint index] => index < 99 ? m_Units[index] : null;
 
+    private int m_Count = 0;
+
     public void AddUnitAtIndex(Unit unit, int index)
     {
         if (index > 99)
@@ -13,10 +15,19 @@ public class UnitRepository
         }
 
         m_Units[index] = unit;
+        m_Count++;
     }
 
     public Unit GetUnitByID(uint id)
     {
         return this[id];
+    }
+
+    public void Destroy()
+    {
+        for (int i = 0; i < m_Count; i++)
+        {
+            m_Units[i] = null;
+        }
     }
 }
