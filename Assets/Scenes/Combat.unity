@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SpawnParent: {fileID: 1111943496}
+  m_LoadMainContext: 1
 --- !u!4 &943584891
 Transform:
   m_ObjectHideFlags: 0
