@@ -19,8 +19,16 @@ public class MainContext : MonoBehaviour
 
     private MainContextState m_State = MainContextState.UI_INIT;
 
+    public void SetState(MainContextState state)
+    {
+        m_State = state;
+    }
+
     private IEnumerator Start()
     {
+        //we might want to change state of main context after a scene load, before starting, so wait half a second when doing so
+        yield return new WaitForSeconds(0.5f);
+
         yield return UpdateCoroutine();
     }
 
@@ -74,6 +82,9 @@ public class MainContext : MonoBehaviour
 
         m_CombatSceneData = new SceneData<CombatContext>();
         yield return SceneLoadSystem.LoadSceneAsyncAdditive(CombatSceneName, m_CombatSceneData);
+
+        //reset load context if we wanted to load main scene from the combat before
+        m_CombatSceneData.SceneContext.ResetLoadContext();
     }
 
     private void InitUI()
