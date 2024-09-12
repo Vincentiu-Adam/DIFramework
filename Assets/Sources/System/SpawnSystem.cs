@@ -10,6 +10,8 @@ public class SpawnSystem
 
     private const string UnitPrefabName = "Assets/Prefabs/Cube";
 
+    private AsyncOperationHandle<GameObject> m_LoadOperation;
+
     public SpawnSystem(Transform spawnParent, UnitRepository unitRepository)
     {
         m_SpawnParent = spawnParent;
@@ -18,19 +20,19 @@ public class SpawnSystem
 
     public IEnumerator Spawn()
     {
-        AsyncOperationHandle<GameObject> loadOp = Addressables.LoadAssetAsync<GameObject>(UnitPrefabName);
+        m_LoadOperation = Addressables.LoadAssetAsync<GameObject>(UnitPrefabName);
 
         // yielding when already done still waits until the next frame; so don't yield if done.
-        if (!loadOp.IsDone)
+        if (!m_LoadOperation.IsDone)
         {
-            yield return loadOp;
+            yield return m_LoadOperation;
         }
 
         //spawn a new unit on each position
         uint i = 0;
         foreach (Transform child in m_SpawnParent)
         {
-            GameObject unit = Object.Instantiate(loadOp.Result, child, false);
+            GameObject unit = Object.Instantiate(m_LoadOperation.Result, child, false);
             unit.name = "Unit_" + i;
 
             //set unit data to unit from repository
@@ -44,5 +46,8 @@ public class SpawnSystem
     {
         m_SpawnParent = null;
         m_UnitRepository = null;
+
+        //release handle since we don't need it anymore
+        Addressables.Release(m_LoadOperation);
     }
 }
