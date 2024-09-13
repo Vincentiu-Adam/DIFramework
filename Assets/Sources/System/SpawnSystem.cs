@@ -33,7 +33,7 @@ public class SpawnSystem
         foreach (Transform child in m_SpawnParent)
         {
             GameObject unit = Object.Instantiate(m_LoadOperation.Result, child, false);
-            unit.name = "Unit_" + i;
+            unit.name = "Unit_" + (i + 1);
 
             //set unit data to unit from repository
             m_UnitRepository[i].VisualData.UnitObject = unit;

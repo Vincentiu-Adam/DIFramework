@@ -20,7 +20,8 @@ public class UnitRepository
 
     public Unit GetUnitByID(uint id)
     {
-        return this[id];
+        //id starts at 1
+        return this[id - 1];
     }
 
     public void Destroy()
