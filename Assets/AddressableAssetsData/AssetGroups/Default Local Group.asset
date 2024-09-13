@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: e15adcd23ee6fe4479655380986c7ca7
   m_SerializeEntries:
+  - m_GUID: 12d5f58ad4725bb45ae543b4f625bc6f
+    m_Address: Assets/ScriptableObject/Archetypes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - archetypes
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3bdb1623ab31f4547ab1cf9c7e4ba790
     m_Address: Assets/Prefabs/Cube
     m_ReadOnly: 0
