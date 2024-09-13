@@ -57,11 +57,11 @@ public class UIContext : MonoBehaviour
     {
         Finished = true;
 
-        Finish();
+        Deconstruct();
     }
 
     //avoid using destroy to not conflict with other interfaces?
-    private void Finish()
+    private void Deconstruct()
     {
         m_FirstButton = null;
         m_SecondButton = null;

@@ -39,7 +39,7 @@ public class CombatContext : MonoBehaviour
 
         yield return m_CombatSystem.Update();
 
-        Finish();
+        Deconstruct();
     }
 
     private IEnumerator Construct()
@@ -64,7 +64,7 @@ public class CombatContext : MonoBehaviour
     }
 
     //avoid using destroy to not conflict with other interfaces?
-    private void Finish()
+    private void Deconstruct()
     {
         Debug.Log("Combat finished");
 

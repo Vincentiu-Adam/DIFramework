@@ -51,7 +51,7 @@ public class MainContext : MonoBehaviour
                     if (m_UISceneData.SceneContext.Finished)
                     {
                         //unload ui and maybe go to the combat scene?
-                        FinishUI();
+                        DeconstructUI();
                     }
                     break;
 
@@ -63,7 +63,7 @@ public class MainContext : MonoBehaviour
                 case MainContextState.COMBAT_UPDATE:
                     if (m_CombatSceneData.SceneContext.Finished)
                     {
-                        FinishCombat();
+                        DeconstructCombat();
                     }
                     break;
             }
@@ -95,13 +95,13 @@ public class MainContext : MonoBehaviour
     }
 
     //avoid using destroy to not conflict with other interfaces?
-    private void FinishUI()
+    private void DeconstructUI()
     {
         UnloadUIScene();
         m_State = MainContextState.COMBAT_INIT;
     }
 
-    private void FinishCombat()
+    private void DeconstructCombat()
     {
         UnloadCombatScene();
         m_State = MainContextState.UI_INIT;
