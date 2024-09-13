@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class CombatContext : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class CombatContext : MonoBehaviour
     private CombatSystem m_CombatSystem = null;
     private SpawnSystem m_SpawnSystem = null;
     private UnitRepository m_UnitRepository = null;
+
+    private const string ArchetypeLabel = "archetypes";
 
     private IEnumerator Start()
     {
@@ -41,10 +44,16 @@ public class CombatContext : MonoBehaviour
 
     private IEnumerator Construct()
     {
+        var loadOp = Addressables.LoadAssetsAsync<ArchetypeDataScriptableObject>(ArchetypeLabel);
+        yield return loadOp;
+
         m_UnitRepository = new UnitRepository();
+        m_CombatSystem = new CombatSystem(m_UnitRepository, new AttackSystem(), loadOp.Result);
+
         m_SpawnSystem = new SpawnSystem(m_SpawnParent, m_UnitRepository);
 
-        m_CombatSystem = new CombatSystem(m_UnitRepository, new AttackSystem());
+        Addressables.Release(loadOp);
+
         yield return null;
     }
 
